@@ -1,1 +1,1 @@
-SECRET_KEY.txt
+/SECRET_KEY.txt
