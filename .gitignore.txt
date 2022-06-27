@@ -1,1 +1,1 @@
-/SECRET_KEY.txt
+djangorooms/djangorooms/settings.py
