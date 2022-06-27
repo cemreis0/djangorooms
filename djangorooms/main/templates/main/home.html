@@ -4,4 +4,10 @@
 
 <h2>home template</h2>
 
+{% for room in rooms %}
+<div>
+    <h2>{{rooom.id}}--<a href="{% url 'room' room.pk %}">{{room.name}}</a></h2>
+</div>
+{% endfor %}
+
 {% endblock %}

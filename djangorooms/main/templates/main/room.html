@@ -2,6 +2,11 @@
 
 {% block content %}
 
-<h2>room template</h2>
+<h2>
+    {{room.id}}--{{room.name}}--{{room.description}}
+    {% for message in messages %}
+    {{message.body}}
+    {% endfor %}
+</h2>
 
 {% endblock %}
