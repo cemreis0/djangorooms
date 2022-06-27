@@ -6,7 +6,12 @@
 
 {% for room in rooms %}
 <div>
-    <h2>{{rooom.id}}--<a href="{% url 'room' room.pk %}">{{room.name}}</a></h2>
+    <a href="{% url 'create-room' %}">create room</a>
+
+    <span style="color:firebrick">@{{room.host.username}}</span>
+    <h2>{{rooom.id}}  <a href="{% url 'room' room.pk %}">{{room.name}}</a></h2>
+    <small>{{room.topic.name}}</small>
+    <hr>
 </div>
 {% endfor %}
 

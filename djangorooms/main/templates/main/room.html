@@ -2,11 +2,10 @@
 
 {% block content %}
 
-<h3>
-    {{room.id}}--{{room.name}}--{{room.description}}
-</h3>
+<h3>{{room.name}}</h3>
+<h4>{{room.description}}</h4>
 {% for message in messages %}
-<p>{{message.body}}</p>
+<p><b>{{message.user}}</b>: {{message.body}}</p>
 {% endfor %}
 <hr>
 

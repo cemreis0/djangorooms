@@ -14,3 +14,8 @@ def room(request, pk):
     messages = Message.objects.filter(room=pk)
     context = {'room': room, 'messages': messages}
     return render(request, 'main/room.html', context)
+
+
+def createRoom(request):
+    context = {}
+    return render(request, 'main/room_form.html', context)
