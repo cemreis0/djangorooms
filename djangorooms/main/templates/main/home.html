@@ -2,20 +2,42 @@
 
 {% block content %}
 
-<h2>home template</h2>
+{% load static %}
 
-<a href="{% url 'create-room' %}">create room</a>
-<hr>
+<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
 
-{% for room in rooms %}
-<div>
-    <a href="{% url 'update-room' room.id %}">edit</a>
-    <a href="{% url 'delete-room' room.id %}">delete</a>
-    <span style="color:firebrick">@{{room.host.username}}</span>
-    <h2>{{rooom.id}}  <a href="{% url 'room' room.pk %}">{{room.name}}</a></h2>
-    <small>{{room.topic.name}}</small>
-    <hr>
+<div class="home-container">
+    <div>
+        <h3>browse topics</h3>
+        <hr>
+        <div>
+            <h4><a href="{% url 'home' %}">all</a></h4>
+        </div>
+        {% for topic in topics %}
+        <div>
+            <h4><a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></h4>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        {% if room_count == 0 %}
+        <h5>no rooms available</h5>
+        {% elif room_count == 1 %}
+        <h5>{{room_count}} room available</h5>
+        {% else %}
+        <h5>{{room_count}} rooms available</h5>
+        {% endif %}
+        <h3><a href="{% url 'create-room' %}">create room</a></h3>
+        <hr>
+    {% for room in rooms %}
+        <a href="{% url 'update-room' room.id %}">edit</a>
+        <a href="{% url 'delete-room' room.id %}">delete</a>
+        <span style="color:firebrick">@{{room.host.username}}</span>
+        <h2>{{rooom.id}}  <a href="{% url 'room' room.pk %}">{{room.name}}</a></h2>
+        <small>{{room.topic.name}}</small>
+        <hr>
+    {% endfor %}
+    </div>
 </div>
-{% endfor %}
 
 {% endblock %}
