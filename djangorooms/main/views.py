@@ -63,14 +63,14 @@ def home(request):
         )
     room_count = rooms.count()
     topics = Topic.objects.all()
-    context = {'rooms': rooms, "topics":topics, "room_count":room_count}
+    context = {'rooms': rooms, "topics":topics, "room_count": room_count}
     return render(request, 'main/home.html', context)
 
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    messages = Message.objects.filter(room=pk)
-    context = {'room': room, 'messages': messages}
+    roomMessages = room.message_set.all()
+    context = {'room': room, 'roomMessages': roomMessages}
     return render(request, 'main/room.html', context)
 
 

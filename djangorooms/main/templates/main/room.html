@@ -4,10 +4,18 @@
 
 <h3>{{room.name}}</h3>
 <h4>{{room.description}}</h4>
-{% for message in messages %}
-<p><b>{{message.user}}</b>: {{message.body}}</p>
-{% endfor %}
 <button type="submit" value="delete">delete room</button>
 <hr>
+
+<div class="comment-wrapper">
+    <h3>conversation</h3>
+    <hr>
+    {% for roomMessage in roomMessages %}
+    <div>
+        <p><strong>{{roomMessage.user}}</strong> {{roomMessage.created|timesince}} ago</p>
+        <h4>{{roomMessage.body}}</h4>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
