@@ -2,20 +2,47 @@
 
 {% block content %}
 
-<h3>{{room.name}}</h3>
-<h4>{{room.description}}</h4>
-<button type="submit" value="delete">delete room</button>
-<hr>
+<style>
+    .room-container {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+    }
+</style>
 
-<div class="comment-wrapper">
-    <h3>conversation</h3>
-    <hr>
-    {% for roomMessage in roomMessages %}
+<div class="room-container">
     <div>
-        <p><strong>{{roomMessage.user}}</strong> {{roomMessage.created|timesince}} ago</p>
-        <h4>{{roomMessage.body}}</h4>
+        <h3>{{room.name}}</h3>
+        <h4>{{room.description}}</h4>
+        <button type="submit" value="delete">delete room</button>
+        <hr>
+        {% if request.user.is_authenticated %}
+        <div class="comment-form">
+            <h3>conversation</h3>
+            <hr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="body" placeholder="write your message here">
+                <input type="submit" value="send">
+            </form>
+        </div>
+        <div class="comment-wrapper">
+            {% for roomMessage in roomMessages %}
+            <div>
+                <p><strong>@{{roomMessage.user}}</strong> {{roomMessage.created|timesince}} ago</p>
+                <h4>{{roomMessage.body}}</h4>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
+    <div>
+        <h3>participants</h3>
+        <hr>
+        {% for participant in participants %}
+        <p><strong>{{participant}}</strong></p>
+        {% endfor %}
+    </div>
 </div>
+{% endif %}
 
 {% endblock %}

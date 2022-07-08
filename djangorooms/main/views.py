@@ -1,5 +1,7 @@
+from asyncio.proactor_events import _ProactorBaseWritePipeTransport
 from email import message
 from itertools import count
+from unicodedata import name
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from .models import Room, Message, Topic
@@ -69,8 +71,16 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    roomMessages = room.message_set.all()
-    context = {'room': room, 'roomMessages': roomMessages}
+    roomMessages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    if request.method == "POST":
+        message = Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body')
+        )
+        return redirect('room', pk=room.id)
+    context = {'room': room, 'roomMessages': roomMessages, "participants": participants}
     return render(request, 'main/room.html', context)
 
 
