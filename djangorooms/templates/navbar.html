@@ -1,14 +1,52 @@
-<a href="/">
-    <h1>logo</h1>
-</a>
-    <p>hello {{request.user.username}}</p>
-    {% if request.user.is_authenticated %}
-    <h2><a href="{% url 'logout' %}">logout</a></h2>
-    {% else %}
-    <h2><a href="{% url 'login' %}">login</a></h2>
-    {% endif %}
+<style>
+  .navbar-brand {
+    font-size: x-large;
+  }
+  .nav-item {
+    font-size: large;
+  }
+  i {
+    margin-right: 16%;
+    display: inline-block;
+  }
+  .d-flex {
+    margin-left: auto;
+    padding-right: 25%;
+    justify-content: center;
+  }
+</style>
 
-<form action="{% url 'home' %}" method="GET">
-    <input type="text" name="q" placeholder="search rooms">
-</form>
-<hr>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Django Odaları</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Anasayfa</a>
+        </li>
+      </ul>
+      {% if request.user.is_authenticated %}
+        <i class="lead text-light ms-5">Merhaba, {{request.user.username}}</i>
+      {% endif %}
+      <form class="d-flex">
+        <input class="form-control me-sm-2" type="text" name="q" placeholder="Arama Yap">
+        <button class="btn btn-secondary m-2 my-sm-0" type="submit"><bi class="bi-search" style="font-size: large;"></bi></button>
+      </form>
+      {% if request.user.is_authenticated %}
+      <form action="{% url 'logout' %}">
+        <button type="submit" class="btn btn-secondary">Çıkış Yap</button>
+      </form>
+      {% else %}
+      <form action="{% url 'login' %}">
+        <button type="submit" class="btn btn-secondary">Giriş Yap</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+

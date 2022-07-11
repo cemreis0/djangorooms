@@ -5,12 +5,11 @@ from unicodedata import name
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from .models import Room, Message, Topic
-from .forms import RoomForm
+from .forms import RoomForm, RegisterForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 
 
@@ -21,16 +20,12 @@ def loginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username').lower()
         password = request.POST.get('password')
-        try:
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'user does not exist')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'username or password does not exist')
+            messages.error(request, 'Kullanıcı adı veya şifre hatalı.')
     context = {'page': page}
     return render(request, 'main/login_register.html', context)
 
@@ -40,9 +35,9 @@ def logoutUser(request):
     return redirect('home')
 
 def registerPage(request):
-    form = UserCreationForm()
+    form = RegisterForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -50,7 +45,7 @@ def registerPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'an error occured')
+            messages.error(request, 'Bir hata oldu. Lütfen tekrar deneyin.')
     context = {'form': form}
     return render(request, 'main/login_register.html', context)
 
@@ -80,6 +75,8 @@ def room(request, pk):
             body=request.POST.get('body')
         )
         return redirect('room', pk=room.id)
+    if request.user.is_authenticated:
+        room.participants.add(request.user)
     context = {'room': room, 'roomMessages': roomMessages, "participants": participants}
     return render(request, 'main/room.html', context)
 
@@ -122,3 +119,14 @@ def deleteRoom(request, pk):
         room.delete()
         return redirect('home')
     return render(request, 'main/delete.html', {'obj': room})
+
+
+@login_required(login_url='login')
+def deleteRoomMessage(request, pk):
+    message = Message.objects.get(id=pk)
+    if request.user != message.user:
+        return HttpResponse('you are not allowed to do that')
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    return render(request, 'main/delete.html', {'obj': message})
