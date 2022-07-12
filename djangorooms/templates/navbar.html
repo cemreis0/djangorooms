@@ -24,24 +24,21 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="/">Anasayfa</a>
-        </li>
-      </ul>
       {% if request.user.is_authenticated %}
-        <i class="lead text-light ms-5">Merhaba, {{request.user.username}}</i>
+        <i class="lead text-light bg-info py-1" style="padding-left: 5px; padding-right: 5px; border-radius: 5px;">
+          Merhaba, {{request.user.username}}
+        </i>
       {% endif %}
-      <form class="d-flex">
-        <input class="form-control me-sm-2" type="text" name="q" placeholder="Arama Yap">
-        <button class="btn btn-secondary m-2 my-sm-0" type="submit"><bi class="bi-search" style="font-size: large;"></bi></button>
+      <form class="d-flex py-1">
+        <input class="form-control" type="text" name="q" placeholder="Arama Yap">
+        <button class="btn btn-secondary ms-1 type="submit"><bi class="bi-search" style="font-size: large;"></bi></button>
       </form>
       {% if request.user.is_authenticated %}
-      <form action="{% url 'logout' %}">
+      <form action="{% url 'logout' %}" class="py-1">
         <button type="submit" class="btn btn-secondary">Çıkış Yap</button>
       </form>
       {% else %}
-      <form action="{% url 'login' %}">
+      <form action="{% url 'login' %}" class="py-1">
         <button type="submit" class="btn btn-secondary">Giriş Yap</button>
       </form>
       {% endif %}

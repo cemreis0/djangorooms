@@ -2,54 +2,51 @@
 
 {% block content %}
 
-<div class="room-container bg-secondary pt-5 pb-1">
-    <div>
-        <ul class="list-group text-light text-center">
-            <h2>{{room.name}}</h2>
-            {% if room.description != None %}
-            <h4 class="lead pt-3"><strong>Açıklama: </strong> {{room.description}}</h4>
-            {% endif %}
-            {% if request.user == room.host %}
-            <div>
-                <a href="{% url 'update-room' room.id %}"><button type="submit" class="btn btn-warning mt-3">Odayı Düzenle</button></a>
-                <a href="{% url 'delete-room' room.id %}"><button type="submit" class="btn btn-danger mt-3" style="min-width: 8%;">Odayı Sil</button></a>
-            </div>
-            {% endif %}
-            <form method="POST" class="mt-4">
-                {% csrf_token %}
-                <input type="text" name="body" placeholder="Mesajınızı Yazın" style="border: 0px; border-radius: 5px; height: 35px; min-width: 250px; text-align: center;">
-                <button class="btn btn-primary mb-2" type="submit"><bi class="i bi-arrow-return-right"></bi></button>
-            </form>
-        </ul>
-    </div>
-</div>
-<div>
-
-</div>
-
-<div class="room-container">
-    <div>
-        {% if request.user.is_authenticated %}
-        <div class="comment-form">
-            <h3>conversation</h3>
-            <hr>
+<div class="room-container bg-secondary">
+    <ul class="list-group text-light text-center py-5">
+        <h2>{{room.name}}</h2>
+        {% if room.description != None %}
+        <h4 class="lead pt-3"><strong>Açıklama: </strong> {{room.description}}</h4>
+        {% endif %}
+        {% if request.user == room.host %}
+        <div>
+            <a href="{% url 'update-room' room.id %}"><button type="submit" class="btn btn-warning mt-3">Odayı Düzenle</button></a>
+            <a href="{% url 'delete-room' room.id %}"><button type="submit" class="btn btn-danger mt-3" style="min-width: 8%;">Odayı Sil</button></a>
         </div>
         {% endif %}
-        <div class="comment-wrapper">
-            {% for roomMessage in roomMessages %}
-            <div>
+        {% if request.user.is_authenticated %}
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            <input type="text" name="body" placeholder="Mesajınızı Yazın" style="border: 0px; border-radius: 5px; height: 35px; min-width: 250px; text-align: center;">
+            <button class="btn btn-primary mb-2" type="submit"><bi class="i bi-arrow-return-right"></bi></button>
+        </form>
+        {% endif %}
+    </ul>
+    <h3 class="bg-primary text-light text-center py-3 w-50 mx-auto" style="border: 0px; border-radius: 5px;">Sohbet</h3>
+    <div class="comment-wrapper py-3">
+        {% for roomMessage in roomMessages %}
+        <div class="card mx-auto" style="max-width: 500px; margin-top: 1px;">
+            <div class="card-body">
+                <span><i>@{{roomMessage.user}}</i></span>
                 {% if request.user == roomMessage.user %}
-                <form action="{% url 'delete-roomMessage' roomMessage.id %}">
-                    <button type="submit" class="btn-primary">Delete Message</button>
+                <form action="{% url 'delete-roomMessage' roomMessage.id %}" style="float: right;">
+                    <button type="submit" class="btn btn-danger">Mesajı Sil</button>
                 </form>
                 {% endif %}
-                <p><strong>@{{roomMessage.user}}</strong> {{roomMessage.created|timesince}} önce</p>
-                <h4>{{roomMessage.body}}</h4>
+                <p>{{roomMessage.created|timesince}} önce</p>
                 <hr>
+                {% if 'spotify.com/embed/track/' in roomMessage.body %}
+                {% autoescape off %}
+                {{roomMessage.body}}
+                {% endautoescape %}
+                {% else %}
+                <h4>{{roomMessage.body}}</h4>
+                {% endif %}
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
+
 </div>
 
 {% endblock %}

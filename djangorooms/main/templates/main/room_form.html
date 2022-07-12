@@ -2,13 +2,29 @@
 
 {% block content %}
 
-<div>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Submit">
-
-    </form>
+<div class="card text-center mx-auto" style="max-width: 500px; margin-top: 2%;">
+    <div class="card-header bg-secondary text-light">
+      Kayıt Ol
+    </div>
+    <div class="card-body border-secondary" style="border: 5px solid;">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <label class="pt-3 pb-1" style="padding-right: 17%;">Konu: </label>
+            <span style="padding-right: 25%;">{{form.topic}}</span>
+            <br>
+            <label class="pt-3 pb-1" style="padding-right: 18%;">İsim: </label>
+            <span style="padding-right: 1%;">{{form.name}}</span>
+            <br>
+            <label class="pt-3 pb-1" style="padding-right: 55%;">Açıklama: </label>
+            <div>
+                {{form.description}}
+            </div> 
+    </div>
+    <div class="card-footer text-center pt-2 bg-secondary text-light">
+        <a href="javascript:history.back()" type="button" class="btn btn-dark">Geri Dön</a>
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+    </div>
+        </form>
 </div>
 
 {% endblock %}

@@ -2,18 +2,18 @@
 
 {% block content %}
 
-<div class="card text-center">
-  <div class="card-header">
-    Deletion Confirmation
+<div class="card text-center mx-auto" style="max-width: 500px; margin-top: 2%;">
+  <div class="card-header bg-secondary text-light">
+    Silme Onayı
   </div>
-  <div class="card-body">
-    <p class="card-text">Silmek istediğinize emin misiniz: <strong>"{{obj}}"</strong>?</p>
+  <div class="card-body border-secondary" style="border: 5px solid;">
+    <p class="card-text">Silmek istediğinize emin misiniz: "<strong>{{obj}}</strong>"?</p>
   </div>
-  <div class="card-footer">
+  <div class="card-footer bg-secondary text-light">
     <form method="POST" action="">
       {% csrf_token %}
-      <a href="/" type="button" class="btn btn-secondary">Geri Dön</a>
-      <button type="submit" class="btn btn-primary" name="deleteMessage">Onayla</button>
+      <a href="javascript:history.back()" type="button" class="btn btn-dark">Geri Dön</a>
+      <button type="submit" class="btn btn-primary">Onayla</button>
     </form>
   </div>
 </div>

@@ -1,4 +1,3 @@
-from asyncio.proactor_events import _ProactorBaseWritePipeTransport
 from email import message
 from itertools import count
 from unicodedata import name
@@ -10,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 def loginPage(request):
@@ -68,12 +67,12 @@ def room(request, pk):
     room = Room.objects.get(id=pk)
     roomMessages = room.message_set.all().order_by('-created')
     participants = room.participants.all()
-    if request.method == "POST":
+    if request.method == 'POST':
         message = Message.objects.create(
             user=request.user,
             room=room,
             body=request.POST.get('body')
-        )
+        )  
         return redirect('room', pk=room.id)
     if request.user.is_authenticated:
         room.participants.add(request.user)
@@ -99,14 +98,15 @@ def createRoom(request):
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
+    roomURL = '/room/' + str(room.id)
     if request.user != room.host:
         return HttpResponse('you are not allowed to do that')
     if request.method == 'POST':
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
             form.save()
-            return redirect('home')
-    context = {'form': form}
+            return redirect(roomURL)
+    context = {'form': form, 'roomURL': roomURL}
     return render(request, 'main/room_form.html', context)
 
 
@@ -118,15 +118,18 @@ def deleteRoom(request, pk):
     if request.method == 'POST':
         room.delete()
         return redirect('home')
-    return render(request, 'main/delete.html', {'obj': room})
+    context = {'obj': room}
+    return render(request, 'main/delete.html', context)
 
 
 @login_required(login_url='login')
 def deleteRoomMessage(request, pk):
     message = Message.objects.get(id=pk)
+    messageRoomURL = '/room/' + str(message.room.id)
     if request.user != message.user:
         return HttpResponse('you are not allowed to do that')
     if request.method == 'POST':
         message.delete()
-        return redirect('home')
-    return render(request, 'main/delete.html', {'obj': message})
+        return redirect(messageRoomURL)
+    context = {'obj': message, 'messageRoomURL': messageRoomURL}
+    return render(request, 'main/delete.html', context)

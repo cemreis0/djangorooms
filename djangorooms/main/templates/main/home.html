@@ -2,9 +2,12 @@
 
 {% block content %}
 
-{% load static %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+<style>
+.home-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+</style>
 
 <div class="home-container py-5 bg-secondary">
     <ul class="list-group pt-1 ps-3">
@@ -66,4 +69,4 @@
     </ul>
 </div>
 
-{% endblock %}
+{% endblock content %}
