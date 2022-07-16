@@ -5,68 +5,31 @@
 <style>
 .home-container {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 2fr 5fr 2fr;
 }
 </style>
 
 <div class="home-container py-5 bg-secondary">
-    <ul class="list-group pt-1 ps-3">
-        <a href="/" type="btn" class="btn btn-primary btn-block btn-lg">
-            Aktif Konular
-        </a>
-        <hr>
-        <li class="list-group-item list-group-item-action bg-primary" style="border: 0px; border-radius: 5px; margin-bottom: 1%;">
-            <a href="{% url 'home' %}" style="text-decoration: none;">
-                <h4 class="text-light">
-                    Tümü
-                    <span class="badge bg-light text-primary rounded-pill" style="float: right">{{room_count}}</span>
-                </h4>
-            </a>
-        </li>
-        {% for topic in topics %}
-        {% if topic.room_set.all.count != 0 %}
-        <li class="list-group-item" style="background-color: whitesmoke; border: 0px; border-radius: 5px; margin-bottom: 1%;">
-            <a href="{% url 'home' %}?q={{topic.name}}" style="text-decoration: none;">
-                <h4>
-                    {{topic.name}}
-                    <span class="badge bg-primary rounded-pill" style="float: right">{{topic.room_set.all.count}}</span>
-                </h4>
-            </a>
-        </li>
-        {% endif %}
-        {% endfor %}
-    </ul>
-    <ul class="list-group ms-4">
+    <div>
+        {% include 'main/topics_component.html' %}
+    </div>
+    <div class="" style="width: 85%; margin-inline: auto;"> 
         <div class="row">
-            <div class="col-md pt-1">
-                <a href="{% url 'create-room' %}">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg me-5" style="width: 175px;">
-                        Oda Oluştur
-                    </button>
-                </a>
+            <div class="col-md text-light" style="margin: auto; border: 0px; margin-top: 1px;">
+                <p class="lead">{{room_count}} oda mevcut.</p>
             </div>
             <div class="col-md pt-1">
-                <button type="button" class="btn btn-block btn-lg text-light" style="background-color:limegreen; opacity: 100%; border: 0px; width: 175px;" disabled>
-                    {{room_count}} oda mevcut.
-                </button>
+            <a href="{% url 'create-room' %}" type="btn" class="btn btn-info btn-block btn-lg text-light">
+                    Oda Oluştur
+                </a>
             </div>
         </div>
         <hr>
-        {% for room in rooms %}
-        <li class="list-group-item" style="border: 3px; border-radius: 5px; margin-bottom: 1%; max-width: 85%; background-color: whitesmoke;">
-            {% if request.user == room.host %}
-            <a href="{% url 'update-room' room.id %}"><button type="submit" class="btn btn-warning mb-3 ">Odayı Düzenle</button></a>
-            <a href="{% url 'delete-room' room.id %}"><button type="submit" class="btn btn-danger mb-3" style="min-width: 8%;">Odayı Sil</button></a>
-            {% endif %}
-            <i class="lead">@{{room.host.username}}</i>
-            <a href="{% url 'room' room.pk %}" style="text-decoration: none;">
-                <h2 class="pb-3 text-primary">{{room.name}}</h2>
-            </a>
-            <small><strong>Konu: </strong><a href="{% url 'home' %}?q={{room.topic.name}}">{{room.topic.name}}</a></small>
-            <span style="float: right;"><small><strong>Oda ID: </strong>{{room.id}}</small></span>
-        </li>
-        {% endfor %}
-    </ul>
+        {% include 'main/feed_component.html' %}
+    </div>
+    <div class="px-2 pt-3">
+        {% include 'main/activity_component.html' %}
+    </div>
 </div>
 
 {% endblock content %}

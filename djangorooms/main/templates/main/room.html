@@ -29,9 +29,9 @@
             <div class="card-body">
                 <span><i>@{{roomMessage.user}}</i></span>
                 {% if request.user == roomMessage.user %}
-                <form action="{% url 'delete-roomMessage' roomMessage.id %}" style="float: right;">
-                    <button type="submit" class="btn btn-danger">Mesajı Sil</button>
-                </form>
+                <a href="{% url 'delete-roomMessage' roomMessage.id %}"  type="submit" class="btn btn-danger" style="float: right;">
+                    Mesajı Sil
+                </a>
                 {% endif %}
                 <p>{{roomMessage.created|timesince}} önce</p>
                 <hr>

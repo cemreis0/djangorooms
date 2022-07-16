@@ -8,7 +8,12 @@ from django.forms.forms import Form
 class RoomForm(ModelForm):
     class Meta:
         model = Room
-        fields = ['topic', 'name', 'description']
+        fields = ['name', 'description', 'topic']
+        exclude = ['host', 'participants']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'class': "form-control"}),
+            }
 
 
 class RegisterForm(UserCreationForm):
@@ -17,7 +22,7 @@ class RegisterForm(UserCreationForm):
     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)  
 
     def username_clean(self):  
-        username = self.cleaned_data['username'].lower()  
+        username = self.cleaned_data['username'].lower()
         new = User.objects.filter(username = username)  
         if new.count():  
             raise ValidationError("Kullanıcı mevcut.")  

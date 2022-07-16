@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="profile-container bg-secondary" style="padding-top: 5%;">
+  <div class="card mx-auto text-center" style="max-width: 500px;">
+    <div class="card-header bg-secondary text-light" style="border: 1px aliceblue solid;">
+      Kullanıcı Profili
+    </div>
+    <div class="card-body border-secondary">
+      <h2>Kullanıcı Adı: {{user.username}}</h2>
+      <h4>Son giriş {{user.last_login|timesince}} önce</h4>
+      <h4>Kayıt Tarihi: {{user.date_joined|date:'d.m.Y'}}</h4>
+    </div>
+  </div>
+
+  <div class="row pt-5 pb-3">
+    <div class="col-md text-center">
+      <h3 class="text-center text-light">Açılan Odalar</h3>
+        <hr>
+      <div class="container mx-auto" style="width: 85%;">
+        {% include 'main/feed_component.html' %}
+      </div>
+    </div>
+    <div class="col-md text-center">
+      {% include 'main/activity_component.html' %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

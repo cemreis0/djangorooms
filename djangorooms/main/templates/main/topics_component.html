@@ -1,0 +1,24 @@
+<ul class="list-group pt-1 ps-5">
+    <h3 class="text-light text-center">Aktif Konular</h3>
+    <hr>
+  <li class="list-group-item list-group-item-action bg-primary" style="border: 0px; border-radius: 5px; margin-bottom: 1%;;">
+      <a href="{% url 'home' %}" style="text-decoration: none;">
+          <h4 class="text-light">
+              Tümü
+              <span class="badge bg-light text-primary rounded-pill">{{room_count}}</span>
+          </h4>
+      </a>
+  </li>
+  {% for topic in topics %}
+  {% if topic.room_set.all.count != 0 %}
+  <li class="list-group-item" style="background-color: whitesmoke; border: 0px; border-radius: 5px; margin-bottom: 1%;">
+      <a href="{% url 'home' %}?q={{topic.name}}" style="text-decoration: none;">
+          <h4>
+              {{topic.name}}
+              <span class="badge bg-primary rounded-pill">{{topic.room_set.all.count}}</span>
+          </h4>
+      </a>
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>

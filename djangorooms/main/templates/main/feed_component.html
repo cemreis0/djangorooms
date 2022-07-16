@@ -1,0 +1,18 @@
+<ul class="list-group">
+  {% for room in rooms %}
+  <li class="list-group-item" style="border: 3px; border-radius: 5px; margin-bottom: 1%; background-color: whitesmoke;">
+      {% if request.user == room.host %}
+      <a href="{% url 'update-room' room.id %}"><button type="submit" class="btn btn-warning mb-3 ">Odayı Düzenle</button></a>
+      <a href="{% url 'delete-room' room.id %}"><button type="submit" class="btn btn-danger mb-3" style="min-width: 8%;">Odayı Sil</button></a>
+      {% endif %}
+      <a href="{% url 'user-profile' room.host.id %}" style="font-style: italic; text-decoration: none;">
+        @{{room.host.username}}
+      </a>
+      <a href="{% url 'room' room.pk %}" style="text-decoration: none;">
+          <h2 class="pb-3 text-primary">{{room.name}}</h2>
+      </a>
+      <small><strong>Konu: </strong><a href="{% url 'home' %}?q={{room.topic.name}}">{{room.topic.name}}</a></small>
+      <span style="float: right;"><small><strong>Oda ID: </strong>{{room.id}}</small></span>
+  </li>
+  {% endfor %}
+</ul>
