@@ -26,7 +26,9 @@
     <div class="collapse navbar-collapse" id="navbar">
       {% if request.user.is_authenticated %}
         <i class="lead text-light bg-info py-1" style="padding-left: 5px; padding-right: 5px; border-radius: 5px;">
+          <a href="{% url 'edit-user' %}" style="text-decoration: none; color:aliceblue;">
           Merhaba, {{request.user.username}}
+          </a>
         </i>
       {% endif %}
       <form class="d-flex py-1">

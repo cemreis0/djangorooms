@@ -13,12 +13,12 @@
     <div>
         {% include 'main/topics_component.html' %}
     </div>
-    <div class="" style="width: 85%; margin-inline: auto;"> 
+    <div style="width: 85%; margin-inline: auto;"> 
         <div class="row">
-            <div class="col-md text-light" style="margin: auto; border: 0px; margin-top: 1px;">
+            <div class="col-md text-light">
                 <p class="lead">{{room_count}} oda mevcut.</p>
             </div>
-            <div class="col-md pt-1">
+            <div class="col-md">
             <a href="{% url 'create-room' %}" type="btn" class="btn btn-info btn-block btn-lg text-light">
                     Oda Oluştur
                 </a>

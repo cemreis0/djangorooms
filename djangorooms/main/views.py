@@ -1,16 +1,14 @@
 from email import message
 from itertools import count
-from unicodedata import name
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from .models import Room, Message, Topic
-from .forms import RoomForm, RegisterForm
+from .forms import RoomForm, RegisterForm, UserForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-
+from django.http import HttpResponse
 
 def loginPage(request):
     page = 'login'
@@ -148,3 +146,18 @@ def deleteRoomMessage(request, pk):
         return redirect(messageRoomURL)
     context = {'obj': message, 'messageRoomURL': messageRoomURL}
     return render(request, 'main/delete.html', context)
+
+
+@login_required(login_url='login')
+def editUser(request):
+    user = request.user 
+    form = UserForm(instance=user)
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk=user.id)
+        else:
+            messages.error(request, 'Bir hata oldu. Lütfen tekrar deneyin.')
+    context = {'form': form}
+    return render(request, 'main/edit_user.html', context)
